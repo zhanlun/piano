@@ -1,0 +1,66 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.piano {
+  width: fit-content;
+  margin: 2em auto;
+  padding: 1em;
+  border: 2px solid black;
+}
+
+.piano-keybed {
+  width: fit-content;
+  margin: 0 1em;
+  border: 3px dotted salmon;
+  position: relative;
+}
+
+.piano-keybed::after {
+  content: "";
+  clear: both;
+  display: block;
+}
+
+.piano-key {
+  width: 3em;
+  height: 10em;
+  margin: 0;
+  float: left;
+  text-align: center;
+  vertical-align: text-bottom;
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+}
+
+.piano-key span {
+  width: 100%;
+  text-align: center;
+}
+
+.piano-key-black {
+  height: 6em;
+  width: 2em;
+  margin: 0 -1.2em;
+  border: 2px solid pink;
+  color: #fff;
+  background: #000;
+  z-index: 2;
+}
+
+.piano-key-white {
+  border: 2px solid turquoise;
+  color: #000;
+  background: #fff;
+  z-index: 1;
+}
