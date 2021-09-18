@@ -12,9 +12,6 @@ masterVolume.gain.value = gainValue
 
 
 function startNote(pitch) {
-  const foundNote = notesInPlaying[pitch]
-  if (foundNote) return
-
   const oscillator = context.createOscillator();
   const noteGain = context.createGain();
   noteGain.gain.setValueAtTime(0, context.currentTime);
@@ -36,25 +33,35 @@ function startNote(pitch) {
 
   oscillator.frequency.setValueAtTime(pitch, context.currentTime);
   oscillator.start(context.currentTime);
-  // oscillator.stop(context.currentTime + 1)
   oscillator.connect(noteGain);
   noteGain.connect(masterVolume);
-  return { oscillator, noteGain }
+  return { oscillator, noteGain, previousTime: context.currentTime }
 }
 
-function stopNote(oscillator, noteGain) {
+function stopNote(oscillator, noteGain, pitch) {
+  const foundNote = notesInPlaying[pitch]
+  if (!foundNote) return
   noteGain.gain.setValueAtTime(noteGain.gain.value, context.currentTime);
   noteGain.gain.exponentialRampToValueAtTime(0.000001, context.currentTime + 0.03);
   oscillator.stop(context.currentTime + 0.1);
 }
 
+// TODO
+// Try to prevent crash in mobile when pressing multiple keys rapidly
 function stopNoteForPitch(pitch) {
-  // return
   const foundNote = notesInPlaying[pitch]
   if (!foundNote) return
-  const { oscillator, noteGain } = foundNote
-  delete notesInPlaying[pitch]
-  stopNote(oscillator, noteGain)
+  const { oscillator, noteGain, previousTime } = foundNote
+  let timeDiff = context.currentTime - previousTime
+  if (timeDiff < 0.5) {
+    setTimeout(() => {
+      delete notesInPlaying[pitch]
+      stopNote(oscillator, noteGain, pitch)
+    }, 1000 - (timeDiff * 1000))
+  } else {
+    delete notesInPlaying[pitch]
+    stopNote(oscillator, noteGain, pitch)
+  }
 }
 
 const notesInPlaying = {}
