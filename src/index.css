@@ -21,7 +21,7 @@ body {
 .piano-keybed {
   width: fit-content;
   margin: 0 1em;
-  border: 3px dotted salmon;
+  border: 3px solid #aaa;
   position: relative;
   /* prevent text selection */
   -webkit-user-select: none;
@@ -58,14 +58,13 @@ body {
   height: 6em;
   width: 2em;
   margin: 0 -1.2em;
-  border: 2px solid pink;
   color: #fff;
   background: #000;
   z-index: 2;
 }
 
 .piano-key-white {
-  border: 2px solid turquoise;
+  border: 2px solid #ccc;
   color: #000;
   background: #fff;
   z-index: 1;

@@ -1,10 +1,14 @@
+
+let gainValue = 0.2
+let attackTime = 0.3;
+let sustainLevel = 0.8;
+let waveType = 'sine'
+
 const context = new AudioContext();
 const masterVolume = context.createGain();
 masterVolume.connect(context.destination);
-masterVolume.gain.value = 0.2
+masterVolume.gain.value = gainValue
 
-let attackTime = 0.3;
-let sustainLevel = 0.8;
 
 function startNote(pitch) {
   const oscillator = context.createOscillator();
@@ -12,7 +16,7 @@ function startNote(pitch) {
   noteGain.gain.setValueAtTime(0, context.currentTime);
   noteGain.gain.linearRampToValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
 
-  oscillator.type = 'sine';
+  oscillator.type = waveType
   oscillator.frequency.setValueAtTime(pitch, context.currentTime);
   oscillator.start(context.currentTime);
   oscillator.connect(noteGain);
@@ -36,25 +40,30 @@ function stopNoteForPitch(pitch) {
 
 const notesInPlaying = {}
 
-const initialState = {
-  context,
-}
+const initialState = {}
 
 /**
  * 
  * Update of TONE, VOLUME, SUSTAIN, etc. happen in this reducer on the audio context
+ *
+ * The state will not change as of now, to keep the same global context
+ *
  */
 const audioContextReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'audioContext/play':
       notesInPlaying[action.pitch] = startNote(action.pitch)
-      return state
+      break
     case 'audioContext/stop':
       stopNoteForPitch(action.pitch)
-      return state
+      break
+    case 'audioContext/changeWaveType':
+      waveType = action.waveType
+      break
     default:
-      return state
   }
+
+  return state
 }
 
 export default audioContextReducer
