@@ -13,7 +13,7 @@ const initialState = [
   493.88,
 ]
 
-const noteReducer = (state = initialState, action) => {
+const noteReducer = (state = initialState.map(t => t / 2), action) => {
   switch (action.type) {
     default:
       return state

@@ -1,3 +1,4 @@
+import { pianoWaveTable } from '../utils/pianoWaveTable';
 
 let gainValue = 0.2
 let attackTime = 0.3;
@@ -15,8 +16,18 @@ function startNote(pitch) {
   const noteGain = context.createGain();
   noteGain.gain.setValueAtTime(0, context.currentTime);
   noteGain.gain.linearRampToValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
+  noteGain.gain.setValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
+  noteGain.gain.exponentialRampToValueAtTime(0.05, context.currentTime + (220 / pitch));
+  noteGain.gain.setValueAtTime(0.05, context.currentTime + (220 / pitch));
+  noteGain.gain.exponentialRampToValueAtTime(0.0005, context.currentTime + (220 / pitch) + 3);
 
-  oscillator.type = waveType
+  var imag = new Float32Array(pianoWaveTable.imag);   // sine
+  var real = new Float32Array(pianoWaveTable.real);  // cos
+  let customWave = context.createPeriodicWave(real, imag);  // cos,sine
+  oscillator.setPeriodicWave(customWave);
+
+  // oscillator.type = waveType
+
   oscillator.frequency.setValueAtTime(pitch, context.currentTime);
   oscillator.start(context.currentTime);
   oscillator.connect(noteGain);
@@ -27,7 +38,7 @@ function startNote(pitch) {
 function stopNote(oscillator, noteGain) {
   noteGain.gain.setValueAtTime(noteGain.gain.value, context.currentTime);
   noteGain.gain.exponentialRampToValueAtTime(0.000001, context.currentTime + 0.03);
-  oscillator.stop(context.currentTime + 1);
+  oscillator.stop(context.currentTime + 0.1);
 }
 
 function stopNoteForPitch(pitch) {
