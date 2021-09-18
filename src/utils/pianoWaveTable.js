@@ -1,3 +1,6 @@
+/**
+ * This wavetable is obtained from https://github.com/GoogleChromeLabs/web-audio-samples/blob/main/archive/demos/wave-tables/Piano under Apache License 2.0
+ */
 export const pianoWaveTable = {
   'real': [
     0.000000,

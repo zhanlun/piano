@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { audioContextChangeWavetype } from '../actions/audioContextAction'
 
 const tones = [
+  'piano',
   'sine',
   'triangle',
   'square',
@@ -21,7 +22,7 @@ const useStyles = makeStyles((theme) => {
 export default function Tones() {
   const dispatch = useDispatch()
   const classes = useStyles()
-  const [waveType, setWaveType] = useState('sine')
+  const [waveType, setWaveType] = useState('piano')
 
   const handleChange = (e) => {
     setWaveType(e.target.value)

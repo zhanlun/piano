@@ -3,7 +3,7 @@ import { pianoWaveTable } from '../utils/pianoWaveTable';
 let gainValue = 0.2
 let attackTime = 0.3;
 let sustainLevel = 0.8;
-let waveType = 'sine'
+let waveType = 'piano'
 
 const context = new AudioContext();
 const masterVolume = context.createGain();
@@ -16,17 +16,21 @@ function startNote(pitch) {
   const noteGain = context.createGain();
   noteGain.gain.setValueAtTime(0, context.currentTime);
   noteGain.gain.linearRampToValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
+
+  /** Decay over time to simulate piano sound */
   noteGain.gain.setValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
-  noteGain.gain.exponentialRampToValueAtTime(1 / pitch, context.currentTime + (440 / pitch));
-  noteGain.gain.setValueAtTime(1 / pitch, context.currentTime + (440 / pitch));
+  noteGain.gain.exponentialRampToValueAtTime(0.05 / pitch, context.currentTime + (440 / pitch));
+  noteGain.gain.setValueAtTime(0.05 / pitch, context.currentTime + (440 / pitch));
   noteGain.gain.exponentialRampToValueAtTime(0.00005, context.currentTime + (880 / pitch));
 
-  var imag = new Float32Array(pianoWaveTable.imag);   // sine
-  var real = new Float32Array(pianoWaveTable.real);  // cos
-  let customWave = context.createPeriodicWave(real, imag);  // cos,sine
-  oscillator.setPeriodicWave(customWave);
-
-  // oscillator.type = waveType
+  if (waveType === 'piano') {
+    var imag = new Float32Array(pianoWaveTable.imag);   // sine
+    var real = new Float32Array(pianoWaveTable.real);  // cos
+    let customWave = context.createPeriodicWave(real, imag);  // cos,sine
+    oscillator.setPeriodicWave(customWave);
+  } else {
+    oscillator.type = waveType
+  }
 
   oscillator.frequency.setValueAtTime(pitch, context.currentTime);
   oscillator.start(context.currentTime);
