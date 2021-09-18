@@ -12,11 +12,13 @@ masterVolume.gain.value = gainValue
 
 
 function startNote(pitch) {
+  const foundNote = notesInPlaying[pitch]
+  if (foundNote) return
+
   const oscillator = context.createOscillator();
   const noteGain = context.createGain();
   noteGain.gain.setValueAtTime(0, context.currentTime);
   noteGain.gain.linearRampToValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
-
   /** Decay over time to simulate piano sound */
   noteGain.gain.setValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
   noteGain.gain.exponentialRampToValueAtTime(0.05 / pitch, context.currentTime + (440 / pitch));
@@ -34,6 +36,7 @@ function startNote(pitch) {
 
   oscillator.frequency.setValueAtTime(pitch, context.currentTime);
   oscillator.start(context.currentTime);
+  // oscillator.stop(context.currentTime + 1)
   oscillator.connect(noteGain);
   noteGain.connect(masterVolume);
   return { oscillator, noteGain }
@@ -46,6 +49,7 @@ function stopNote(oscillator, noteGain) {
 }
 
 function stopNoteForPitch(pitch) {
+  // return
   const foundNote = notesInPlaying[pitch]
   if (!foundNote) return
   const { oscillator, noteGain } = foundNote
