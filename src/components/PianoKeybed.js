@@ -82,7 +82,7 @@ export default function PianoKeybed() {
       {
         noteList &&
         noteList.map(noteMap => (
-          <PianoKey className={noteMap.className} key={noteMap.pitch} name={noteMap.name} />
+          <PianoKey className={noteMap.className} key={noteMap.pitch} name={noteMap.name} pitch={noteMap.pitch} />
         ))
       }
     </div>

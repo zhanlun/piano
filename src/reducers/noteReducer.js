@@ -13,12 +13,11 @@ const initialState = [
   493.88,
 ]
 
-const notes = (state = initialState, action) => {
+const noteReducer = (state = initialState, action) => {
   switch (action.type) {
-
     default:
       return state
   }
 }
 
-export default notes
+export default noteReducer
