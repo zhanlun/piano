@@ -29,7 +29,7 @@ export default function Tones() {
     dispatch(audioContextChangeWavetype(e.target.value))
   }
   return (
-    <Box m={3}>
+    <Box m={3} className="toolbar-options">
       <InputLabel>Tone</InputLabel>
       <Select
         label="Tone"

@@ -81,3 +81,7 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+.toolbar-options {
+  flex-grow: 1;
+}

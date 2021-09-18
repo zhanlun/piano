@@ -14,7 +14,7 @@ export default function Volume() {
     dispatch(audioContextChangeVolume(newValue))
   }
   return (
-    <Box m={3}>
+    <Box m={3} className="toolbar-options">
       <Typography gutterBottom>
         Volume
       </Typography>
