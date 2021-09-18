@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { audioContextChangeWavetype } from '../actions/audioContextAction'
 import PianoKeybed from './PianoKeybed'
+import Tones from './Tones'
+import Volume from './Volume'
 
 export default function Piano() {
   const dispatch = useDispatch()
@@ -23,12 +25,10 @@ export default function Piano() {
 
   return (
     <div className="piano">
-      <select name="waveType" value={data.waveType} onChange={handleChange}>
-        <option value="sine">sine</option>
-        <option value="triangle">triangle</option>
-        <option value="square">square</option>
-        <option value="sawtooth">sawtooth</option>
-      </select>
+      <div className="toolbar">
+        <Tones />
+        <Volume />
+      </div>
       <PianoKeybed />
     </div>
   )

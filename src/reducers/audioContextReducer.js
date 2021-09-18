@@ -60,6 +60,10 @@ const audioContextReducer = (state = initialState, action) => {
     case 'audioContext/changeWaveType':
       waveType = action.waveType
       break
+    case 'audioContext/changeVolume':
+      masterVolume.gain.value = action.volume
+      break
+
     default:
   }
 

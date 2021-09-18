@@ -13,3 +13,8 @@ export const audioContextChangeWavetype = waveType => ({
   type: 'audioContext/changeWaveType',
   waveType,
 })
+
+export const audioContextChangeVolume = volume => ({
+  type: 'audioContext/changeVolume',
+  volume,
+})

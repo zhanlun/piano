@@ -76,3 +76,8 @@ body {
     margin-top: 20em;
   }
 }
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+}
