@@ -17,9 +17,9 @@ function startNote(pitch) {
   noteGain.gain.setValueAtTime(0, context.currentTime);
   noteGain.gain.linearRampToValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
   noteGain.gain.setValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
-  noteGain.gain.exponentialRampToValueAtTime(0.05, context.currentTime + (220 / pitch));
-  noteGain.gain.setValueAtTime(0.05, context.currentTime + (220 / pitch));
-  noteGain.gain.exponentialRampToValueAtTime(0.0005, context.currentTime + (220 / pitch) + 3);
+  noteGain.gain.exponentialRampToValueAtTime(1 / pitch, context.currentTime + (440 / pitch));
+  noteGain.gain.setValueAtTime(1 / pitch, context.currentTime + (440 / pitch));
+  noteGain.gain.exponentialRampToValueAtTime(0.00005, context.currentTime + (880 / pitch));
 
   var imag = new Float32Array(pianoWaveTable.imag);   // sine
   var real = new Float32Array(pianoWaveTable.real);  // cos
