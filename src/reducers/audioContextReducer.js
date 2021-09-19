@@ -41,20 +41,25 @@ function startNote(pitch) {
 }
 
 function stopNote(oscillator, noteGain, pitch) {
+  if (notesInPlaying[pitch]) return
   noteGain.gain.setValueAtTime(noteGain.gain.value, context.currentTime);
   noteGain.gain.exponentialRampToValueAtTime(0.000001, context.currentTime + 0.03);
   oscillator.stop(context.currentTime + 0.1);
 }
 
-// TODO
-// Try to prevent crash in mobile when pressing multiple keys rapidly
-// May test using desktop using keyboard first
 function stopNoteForPitch(pitch) {
   const foundNote = notesInPlaying[pitch]
   if (!foundNote) return
-  if (sustainOn) return
-
   const { oscillator, noteGain, previousTime } = foundNote
+
+  if (sustainOn) {
+    setTimeout(() => {
+      delete notesInPlaying[pitch]
+      stopNote(oscillator, noteGain, pitch)
+    }, 4000)
+    return
+  }
+
   let timeDiff = context.currentTime - previousTime
   if (timeDiff < 0.3) {
     setTimeout(() => {
@@ -73,6 +78,10 @@ let sustainOn = false
 const initialState = {
   sustain: sustainOn,
 }
+
+setInterval(() => {
+  console.log(notesInPlaying)
+}, 2000);
 
 const audioContextReducer = (state = initialState, action) => {
   switch (action.type) {
