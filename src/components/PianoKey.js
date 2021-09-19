@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { audioContextPlay, audioContextStop } from '../actions/audioContextAction'
 
@@ -12,6 +12,16 @@ export default function PianoKey({ pitch, name, className }) {
     e.preventDefault()
     dispatch(audioContextStop(pitch))
   }
+
+  useEffect(() => {
+    /**
+     * stop current pitch if rerender due to setting change
+     */
+    return function cleanup() {
+      dispatch(audioContextStop(pitch))
+    }
+  })
+
   return (
     <div className={className} key={pitch}
       onMouseDown={handlePlay} onMouseUp={handleStop}

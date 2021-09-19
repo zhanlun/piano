@@ -18,3 +18,7 @@ export const audioContextChangeVolume = volume => ({
   type: 'audioContext/changeVolume',
   volume,
 })
+
+export const audioContextToggleSustain = () => ({
+  type: 'audioContext/toggleSustain',
+})

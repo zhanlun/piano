@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { audioContextPlay, audioContextStop } from '../actions/audioContextAction'
+import { audioContextPlay, audioContextStop, audioContextToggleSustain } from '../actions/audioContextAction'
 import Octave from './Octave'
 import PianoKeybed from './PianoKeybed'
+import SustainPedal from './SustainPedal'
 import Tones from './Tones'
 import Transpose from './Transpose'
 import Volume from './Volume'
@@ -12,9 +13,13 @@ export default function Piano() {
   const pitchMapList = useSelector(state => state.notes.pitchMapList)
 
   useEffect(() => {
+    const isSpacebar = (key) => key === ' '
+    const toggleSustain = () => dispatch(audioContextToggleSustain())
     const handleKeyDown = (e) => {
       if (e.repeat) return
-
+      if (isSpacebar(e.key)) {
+        return toggleSustain()
+      }
       const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
       if (!matchKey) return
 
@@ -23,7 +28,6 @@ export default function Piano() {
 
     const handleKeyUp = (e) => {
       if (e.repeat) return
-
       const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
       if (!matchKey) return
 
@@ -48,6 +52,7 @@ export default function Piano() {
         <Volume />
       </div>
       <PianoKeybed />
+      <SustainPedal />
     </div>
   )
 }

@@ -52,6 +52,8 @@ function stopNote(oscillator, noteGain, pitch) {
 function stopNoteForPitch(pitch) {
   const foundNote = notesInPlaying[pitch]
   if (!foundNote) return
+  if (sustainOn) return
+
   const { oscillator, noteGain, previousTime } = foundNote
   let timeDiff = context.currentTime - previousTime
   if (timeDiff < 0.3) {
@@ -66,16 +68,12 @@ function stopNoteForPitch(pitch) {
 }
 
 const notesInPlaying = {}
+let sustainOn = false
 
-const initialState = {}
+const initialState = {
+  sustain: sustainOn,
+}
 
-/**
- * 
- * Update of TONE, VOLUME, SUSTAIN, etc. happen in this reducer on the audio context
- *
- * The state will not change as of now, to keep the same global context
- *
- */
 const audioContextReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'audioContext/play':
@@ -90,7 +88,12 @@ const audioContextReducer = (state = initialState, action) => {
     case 'audioContext/changeVolume':
       masterVolume.gain.value = action.volume
       break
-
+    case 'audioContext/toggleSustain':
+      sustainOn = !state.sustain
+      return {
+        ...state,
+        sustain: !state.sustain,
+      }
     default:
   }
 
