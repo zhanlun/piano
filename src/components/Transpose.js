@@ -1,6 +1,7 @@
 import { Box, InputLabel, MenuItem, Select } from '@material-ui/core'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { noteSetTranspose } from '../actions/noteAction'
 
 const keyOptions = [
   'C',
@@ -19,20 +20,17 @@ const keyOptions = [
 
 export default function Transpose() {
   const dispatch = useDispatch()
-  const [key, setKey] = useState(0)
+  const transposeStep = useSelector(state => state.notes.transposeStep)
 
   const handleChange = (e) => {
-    console.log(e.target.value)
-    setKey(e.target.value)
-    // const step = keyOptions.indexOf(e.target.value)
-    // dispatch(noteTranspose(step))
+    dispatch(noteSetTranspose(e.target.value))
   }
   return (
     <Box m={3} className="toolbar-options">
       <InputLabel>Transpose</InputLabel>
       <Select
         label="Octave"
-        value={key}
+        value={transposeStep}
         onChange={handleChange}
       >
         {keyOptions &&

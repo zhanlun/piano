@@ -1,4 +1,6 @@
 const initialState = {
+  transposeStep: 0,
+  octaveShift: 0,
   pitchMapList: [
     { frequency: 130.815, keyChar: 'z' },
     { frequency: 138.59, keyChar: 's' },
@@ -28,15 +30,29 @@ const initialState = {
   ]
 }
 
+const getNewPitchMapList = (pitchMapList, octaveShift, transposeStep) => {
+  const octaveRatio = Math.pow(2, octaveShift)
+  const transposeRatio = Math.pow(1.059463, transposeStep)
+  const totalRatio = octaveRatio * transposeRatio
+  return pitchMapList.map(obj => ({
+    ...obj,
+    frequency: Math.round(obj.frequency * totalRatio * 1000) / 1000 // round to 3 d.p.
+  }))
+}
+
 const noteReducer = (state = initialState, action) => {
   switch (action.type) {
-    case 'note/shiftOctave':
+    case 'note/setOctave':
       return {
         ...state,
-        pitchMapList: initialState.pitchMapList.map(obj => ({
-          ...obj,
-          frequency: obj.frequency * Math.pow(2, action.amount)
-        })),
+        octaveShift: action.amount,
+        pitchMapList: getNewPitchMapList(initialState.pitchMapList, action.amount, state.transposeStep),
+      }
+    case 'note/setTranspose':
+      return {
+        ...state,
+        transposeStep: action.step,
+        pitchMapList: getNewPitchMapList(initialState.pitchMapList, state.octaveShift, action.step),
       }
     default:
       return state

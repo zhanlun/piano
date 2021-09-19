@@ -1,10 +1,10 @@
 
-export const noteShiftOctave = amount => ({
-  type: 'note/shiftOctave',
+export const noteSetOctave = amount => ({
+  type: 'note/setOctave',
   amount
 })
 
-export const noteTranspose = step => ({
-  type: 'note/transpose',
+export const noteSetTranspose = step => ({
+  type: 'note/setTranspose',
   step
 })
