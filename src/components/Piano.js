@@ -4,6 +4,7 @@ import { audioContextPlay, audioContextStop } from '../actions/audioContextActio
 import Octave from './Octave'
 import PianoKeybed from './PianoKeybed'
 import Tones from './Tones'
+import Transpose from './Transpose'
 import Volume from './Volume'
 
 export default function Piano() {
@@ -41,6 +42,7 @@ export default function Piano() {
   return (
     <div className="piano">
       <div className="toolbar">
+        <Transpose />
         <Tones />
         <Octave />
         <Volume />
