@@ -27,7 +27,6 @@ export default function Octave() {
   const handleChange = (e) => {
     setAmount(e.target.value)
     const amount = Number.parseInt(e.target.value)
-    console.log(amount)
     dispatch(noteShiftOctave(amount))
   }
   return (

@@ -18,9 +18,11 @@ function startNote(pitch) {
   noteGain.gain.linearRampToValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
   /** Decay over time to simulate piano sound */
   noteGain.gain.setValueAtTime(sustainLevel, context.currentTime + 0.1 * attackTime);
-  noteGain.gain.exponentialRampToValueAtTime(0.05 / pitch, context.currentTime + (440 / pitch));
-  noteGain.gain.setValueAtTime(0.05 / pitch, context.currentTime + (440 / pitch));
-  noteGain.gain.exponentialRampToValueAtTime(0.00005, context.currentTime + (880 / pitch));
+  const decayTime1 = 440 / Math.max(110, Math.min(pitch, 440))
+  const decayTime2 = 880 / Math.max(110, Math.min(pitch, 880))
+  noteGain.gain.exponentialRampToValueAtTime(0.05 / pitch, context.currentTime + decayTime1);
+  noteGain.gain.setValueAtTime(0.05 / pitch, context.currentTime + decayTime1);
+  noteGain.gain.exponentialRampToValueAtTime(0.00005, context.currentTime + decayTime2);
 
   if (waveType === 'piano') {
     var imag = new Float32Array(pianoWaveTable.imag);   // sine
