@@ -57,25 +57,18 @@ const notePatterns = [
 ]
 
 export default function PianoKeybed() {
-  const notePitches = useSelector(state => state.notes)
-  let numberOfOctaves = 2
+  const pitchMapList = useSelector(state => state.notes.pitchMapList)
+
   const noteList = []
-  for (let i = 0; i < numberOfOctaves; i++) {
-    for (let j = 0; j < notePitches.length; j++) {
-      const pitch = notePitches[j] * (Math.pow(2, i));
-      noteList.push({
-        name: notePatterns[j].name,
-        className: notePatterns[j].className,
-        pitch,
-      })
-    }
+
+  for (let i = 0; i < pitchMapList.length; i++) {
+    const obj = pitchMapList[i]
+    noteList.push({
+      name: obj.keyChar,
+      className: notePatterns[i % 12].className,
+      pitch: obj.frequency,
+    })
   }
-  // tail key C
-  noteList.push({
-    name: notePatterns[0].name,
-    className: notePatterns[0].className,
-    pitch: notePitches[0] * (Math.pow(2, numberOfOctaves))
-  })
 
   return (
     <div className="piano-keybed">

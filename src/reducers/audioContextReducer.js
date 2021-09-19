@@ -48,6 +48,7 @@ function stopNote(oscillator, noteGain, pitch) {
 
 // TODO
 // Try to prevent crash in mobile when pressing multiple keys rapidly
+// May test using desktop using keyboard first
 function stopNoteForPitch(pitch) {
   const foundNote = notesInPlaying[pitch]
   if (!foundNote) return

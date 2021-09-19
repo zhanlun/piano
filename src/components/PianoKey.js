@@ -17,7 +17,6 @@ export default function PianoKey({ pitch, name, className }) {
       onMouseDown={handlePlay} onMouseUp={handleStop}
       onMouseLeave={handleStop}
       onTouchStart={handlePlay} onTouchEnd={handleStop}
-      // onTouchCancel={handleStop}
     >
       <span>{name}</span>
     </div>
