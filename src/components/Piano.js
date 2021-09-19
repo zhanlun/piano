@@ -10,7 +10,7 @@ export default function Piano() {
   const pitchMapList = useSelector(state => state.notes.pitchMapList)
 
   useEffect(() => {
-    function handleKeyDown(e) {
+    const handleKeyDown = (e) => {
       if (e.repeat) return
 
       const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
@@ -18,7 +18,8 @@ export default function Piano() {
 
       dispatch(audioContextPlay(matchKey.frequency))
     }
-    function handleKeyUp(e) {
+
+    const handleKeyUp = (e) => {
       if (e.repeat) return
 
       const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
@@ -34,7 +35,7 @@ export default function Piano() {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
     }
-  }, [])
+  }, [dispatch, pitchMapList])
 
   return (
     <div className="piano">
