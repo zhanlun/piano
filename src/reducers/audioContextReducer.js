@@ -79,10 +79,6 @@ const initialState = {
   sustain: sustainOn,
 }
 
-setInterval(() => {
-  console.log(notesInPlaying)
-}, 2000);
-
 const audioContextReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'audioContext/play':

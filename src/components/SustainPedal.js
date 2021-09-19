@@ -1,4 +1,4 @@
-import { FormControlLabel, Switch, Typography } from '@material-ui/core';
+import { FormControlLabel, Switch } from '@material-ui/core';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { audioContextToggleSustain } from '../actions/audioContextAction';
@@ -12,10 +12,10 @@ export default function SustainPedal() {
   }
 
   return (
-    <div style={{ margin: '16px auto', textAlign: 'center' }}>
+    <div style={{ margin: '1px auto', textAlign: 'center' }}>
       <FormControlLabel
         value="sustain"
-        label="Sustain"
+        label="Sustain (spacebar)"
         labelPlacement="bottom"
         control={
           <Switch
@@ -26,7 +26,6 @@ export default function SustainPedal() {
           />
         }
       />
-      <Typography variant="subtitle1">(spacebar)</Typography>
     </div>
   )
 }
