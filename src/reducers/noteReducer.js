@@ -30,6 +30,15 @@ const initialState = {
 
 const noteReducer = (state = initialState, action) => {
   switch (action.type) {
+    case 'note/shiftOctave':
+      console.log(Math.pow(2, action.amount))
+      return {
+        ...state,
+        pitchMapList: initialState.pitchMapList.map(obj => ({
+          ...obj,
+          frequency: obj.frequency * Math.pow(2, action.amount)
+        })),
+      }
     default:
       return state
   }

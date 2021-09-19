@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { audioContextPlay, audioContextStop } from '../actions/audioContextAction'
+import Octave from './Octave'
 import PianoKeybed from './PianoKeybed'
 import Tones from './Tones'
 import Volume from './Volume'
@@ -41,6 +42,7 @@ export default function Piano() {
     <div className="piano">
       <div className="toolbar">
         <Tones />
+        <Octave />
         <Volume />
       </div>
       <PianoKeybed />
