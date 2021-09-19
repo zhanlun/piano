@@ -41,8 +41,6 @@ function startNote(pitch) {
 }
 
 function stopNote(oscillator, noteGain, pitch) {
-  const foundNote = notesInPlaying[pitch]
-  if (!foundNote) return
   noteGain.gain.setValueAtTime(noteGain.gain.value, context.currentTime);
   noteGain.gain.exponentialRampToValueAtTime(0.000001, context.currentTime + 0.03);
   oscillator.stop(context.currentTime + 0.1);
@@ -56,11 +54,11 @@ function stopNoteForPitch(pitch) {
   if (!foundNote) return
   const { oscillator, noteGain, previousTime } = foundNote
   let timeDiff = context.currentTime - previousTime
-  if (timeDiff < 0.5) {
+  if (timeDiff < 0.3) {
     setTimeout(() => {
       delete notesInPlaying[pitch]
       stopNote(oscillator, noteGain, pitch)
-    }, 1000 - (timeDiff * 1000))
+    }, 300 - (timeDiff * 300))
   } else {
     delete notesInPlaying[pitch]
     stopNote(oscillator, noteGain, pitch)
