@@ -2,31 +2,31 @@ const initialState = {
   transposeStep: 0,
   octaveShift: 0,
   pitchMapList: [
-    { frequency: 130.815, keyChar: 'z' },
-    { frequency: 138.59, keyChar: 's' },
-    { frequency: 146.83, keyChar: 'x' },
-    { frequency: 155.565, keyChar: 'd' },
-    { frequency: 164.815, keyChar: 'c' },
-    { frequency: 174.615, keyChar: 'v' },
-    { frequency: 184.995, keyChar: 'g' },
-    { frequency: 196, keyChar: 'b' },
-    { frequency: 207.65, keyChar: 'h' },
-    { frequency: 220, keyChar: 'n' },
-    { frequency: 233.08, keyChar: 'j' },
-    { frequency: 246.94, keyChar: 'm' },
-    { frequency: 261.63, keyChar: 'q' },
-    { frequency: 277.18, keyChar: '2' },
-    { frequency: 293.66, keyChar: 'w' },
-    { frequency: 311.13, keyChar: '3' },
-    { frequency: 329.63, keyChar: 'e' },
-    { frequency: 349.23, keyChar: 'r' },
-    { frequency: 369.99, keyChar: '5' },
-    { frequency: 392, keyChar: 't' },
-    { frequency: 415.3, keyChar: '6' },
-    { frequency: 440, keyChar: 'y' },
-    { frequency: 466.16, keyChar: '7' },
-    { frequency: 493.88, keyChar: 'u' },
-    { frequency: 523.26, keyChar: 'i' },
+    { frequency: 130.815, keyChar: 'z', active: false, },
+    { frequency: 138.59, keyChar: 's', active: false, },
+    { frequency: 146.83, keyChar: 'x', active: false, },
+    { frequency: 155.565, keyChar: 'd', active: false, },
+    { frequency: 164.815, keyChar: 'c', active: false, },
+    { frequency: 174.615, keyChar: 'v', active: false, },
+    { frequency: 184.995, keyChar: 'g', active: false, },
+    { frequency: 196, keyChar: 'b', active: false, },
+    { frequency: 207.65, keyChar: 'h', active: false, },
+    { frequency: 220, keyChar: 'n', active: false, },
+    { frequency: 233.08, keyChar: 'j', active: false, },
+    { frequency: 246.94, keyChar: 'm', active: false, },
+    { frequency: 261.63, keyChar: 'q', active: false, },
+    { frequency: 277.18, keyChar: '2', active: false, },
+    { frequency: 293.66, keyChar: 'w', active: false, },
+    { frequency: 311.13, keyChar: '3', active: false, },
+    { frequency: 329.63, keyChar: 'e', active: false, },
+    { frequency: 349.23, keyChar: 'r', active: false, },
+    { frequency: 369.99, keyChar: '5', active: false, },
+    { frequency: 392, keyChar: 't', active: false, },
+    { frequency: 415.3, keyChar: '6', active: false, },
+    { frequency: 440, keyChar: 'y', active: false, },
+    { frequency: 466.16, keyChar: '7', active: false, },
+    { frequency: 493.88, keyChar: 'u', active: false, },
+    { frequency: 523.26, keyChar: 'i', active: false, },
   ]
 }
 
@@ -53,6 +53,26 @@ const noteReducer = (state = initialState, action) => {
         ...state,
         transposeStep: action.step,
         pitchMapList: getNewPitchMapList(initialState.pitchMapList, state.octaveShift, action.step),
+      }
+    case 'note/activateKey':
+      return {
+        ...state,
+        pitchMapList: state.pitchMapList.slice(0).map(obj => {
+          if (obj.keyChar !== action.key) return obj
+
+          obj.active = true
+          return obj
+        })
+      }
+    case 'note/deactivateKey':
+      return {
+        ...state,
+        pitchMapList: state.pitchMapList.slice(0).map(obj => {
+          if (obj.keyChar !== action.key) return obj
+
+          obj.active = false
+          return obj
+        })
       }
     default:
       return state
