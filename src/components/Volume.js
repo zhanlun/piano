@@ -1,17 +1,17 @@
 import { Typography } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Slider from '@material-ui/core/Slider';
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { audioContextChangeVolume } from '../actions/audioContextAction';
+import React, { useContext, useState } from 'react';
+import { PianoAudioContext } from '../contexts/pianoAudioContext';
 
 export default function Volume() {
-  const dispatch = useDispatch()
+  const { changeVolume } = useContext(PianoAudioContext)
   const [volume, setVolume] = useState(0.2)
 
   const handleChange = (e, newValue) => {
+    console.log(newValue)
     setVolume(newValue)
-    dispatch(audioContextChangeVolume(newValue))
+    changeVolume(newValue)
   }
   return (
     <Box m={3} className="toolbar-options">

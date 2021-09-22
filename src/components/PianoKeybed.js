@@ -1,8 +1,8 @@
 import clsx from 'clsx'
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { audioContextPlay, audioContextStop, audioContextToggleSustain } from '../actions/audioContextAction'
 import { noteActivateKey, noteDeactivateKey } from '../actions/noteAction'
+import { PianoAudioContext } from '../contexts/pianoAudioContext'
 import PianoKey from './PianoKey'
 
 const whiteKeyClass = clsx('piano-key', 'piano-key-white')
@@ -59,21 +59,18 @@ const notePatterns = [
 ]
 
 export default function PianoKeybed() {
+  const { play, stop } = useContext(PianoAudioContext)
   const pitchMapList = useSelector(state => state.notes.pitchMapList)
   const dispatch = useDispatch()
 
   useEffect(() => {
-    const isSpacebar = (key) => key === ' '
-    const toggleSustain = () => dispatch(audioContextToggleSustain())
     const handleKeyDown = (e) => {
       if (e.repeat) return
-      if (isSpacebar(e.key)) {
-        return toggleSustain()
-      }
+
       const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
       if (!matchKey) return
 
-      dispatch(audioContextPlay(matchKey.frequency))
+      play(matchKey.frequency)
       dispatch(noteActivateKey(matchKey.keyChar))
     }
 
@@ -82,7 +79,7 @@ export default function PianoKeybed() {
       const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
       if (!matchKey) return
 
-      dispatch(audioContextStop(matchKey.frequency))
+      stop(matchKey.frequency)
       dispatch(noteDeactivateKey(matchKey.keyChar))
     }
 
@@ -93,7 +90,7 @@ export default function PianoKeybed() {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
     }
-  }, [dispatch, pitchMapList])
+  }, [dispatch, pitchMapList, play, stop])
 
   const noteList = []
 

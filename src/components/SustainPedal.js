@@ -1,15 +1,31 @@
 import { FormControlLabel, Switch } from '@material-ui/core';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { audioContextToggleSustain } from '../actions/audioContextAction';
+import React, { useContext, useEffect, useState } from 'react';
+import { PianoAudioContext } from '../contexts/pianoAudioContext';
 
 export default function SustainPedal() {
-  const dispatch = useDispatch()
-  const sustain = useSelector(state => state.audioContext.sustain)
+  const [sustain, setSustain] = useState(false) // for displaying switch status
+  const { changeSustain } = useContext(PianoAudioContext)  // set sustain for use by audio context
 
-  const handleChange = () => {
-    dispatch(audioContextToggleSustain())
+  const toggleSustain = () => {
+    const newSustainState = !sustain
+    setSustain(newSustainState)
+    changeSustain(newSustainState)
   }
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.repeat) return
+      if (e.key === ' ') {
+        return toggleSustain()
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return function cleanup() {
+      document.removeEventListener('keydown', handleKeyDown);
+    }
+  })
 
   return (
     <div style={{ margin: '1px auto', textAlign: 'center' }}>
@@ -20,7 +36,7 @@ export default function SustainPedal() {
         control={
           <Switch
             checked={sustain}
-            onChange={handleChange}
+            onChange={toggleSustain}
             color="primary"
             name="sustain"
           />

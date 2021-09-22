@@ -1,3 +1,4 @@
+import { createContext } from "react";
 import { pianoWaveTable } from '../utils/pianoWaveTable';
 
 let gainValue = 0.2
@@ -9,7 +10,6 @@ const context = new AudioContext();
 const masterVolume = context.createGain();
 masterVolume.connect(context.destination);
 masterVolume.gain.value = gainValue
-
 
 function startNote(pitch) {
   const oscillator = context.createOscillator();
@@ -76,33 +76,51 @@ const notesInPlaying = {}
 let sustainOn = false
 
 const initialState = {
-  sustain: sustainOn,
+  /**
+   * Play a note
+   * @param {Number} pitch Frequency in hertz
+   */
+  play: (pitch) => {
+    notesInPlaying[pitch] = startNote(pitch)
+  },
+  /**
+   * Stop a note
+   * @param {Number} pitch Frequency in hertz
+   */
+  stop: (pitch) => {
+    stopNoteForPitch(pitch)
+  },
+  /**
+   * Set the value of waveType for use by audio context
+   * @param {string} newWaveType 
+   */
+  changeWaveType: (newWaveType) => {
+    waveType = newWaveType
+  },
+  /**
+   * Set the value of volume for use by audio context
+   * @param {Number} newVolume 
+   */
+  changeVolume: (newVolume) => {
+    console.log(newVolume)
+    console.log(typeof newVolume)
+    masterVolume.gain.value = newVolume
+  },
+  /**
+   * Set the value of sustain for use by audio context, call by Piano
+   * @param {boolean} newSustain 
+   */
+  changeSustain: (newSustain) => {
+    sustainOn = newSustain
+  },
 }
 
-const audioContextReducer = (state = initialState, action) => {
-  switch (action.type) {
-    case 'audioContext/play':
-      notesInPlaying[action.pitch] = startNote(action.pitch)
-      break
-    case 'audioContext/stop':
-      stopNoteForPitch(action.pitch)
-      break
-    case 'audioContext/changeWaveType':
-      waveType = action.waveType
-      break
-    case 'audioContext/changeVolume':
-      masterVolume.gain.value = action.volume
-      break
-    case 'audioContext/toggleSustain':
-      sustainOn = !state.sustain
-      return {
-        ...state,
-        sustain: !state.sustain,
-      }
-    default:
-  }
+export const PianoAudioContext = createContext(initialState)
 
-  return state
+export default function PianoAudioContextProvider(props) {
+  return (
+    <PianoAudioContext.Provider value={initialState}>
+      {props.children}
+    </PianoAudioContext.Provider>
+  )
 }
-
-export default audioContextReducer

@@ -1,7 +1,6 @@
 import { Box, InputLabel, makeStyles, MenuItem, Select } from '@material-ui/core'
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { audioContextChangeWavetype } from '../actions/audioContextAction'
+import React, { useContext, useState } from 'react'
+import { PianoAudioContext } from '../contexts/pianoAudioContext'
 
 const tones = [
   'piano',
@@ -20,13 +19,14 @@ const useStyles = makeStyles((theme) => {
 })
 
 export default function Tones() {
-  const dispatch = useDispatch()
+  const { changeWaveType } = useContext(PianoAudioContext)
   const classes = useStyles()
   const [waveType, setWaveType] = useState('piano')
 
   const handleChange = (e) => {
-    setWaveType(e.target.value)
-    dispatch(audioContextChangeWavetype(e.target.value))
+    const newWaveType = e.target.value
+    setWaveType(newWaveType)
+    changeWaveType(newWaveType)
   }
   return (
     <Box m={3} className="toolbar-options">
