@@ -1,7 +1,7 @@
 import clsx from 'clsx'
 import React, { useContext, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { noteActivateKey, noteDeactivateKey } from '../actions/noteAction'
+import { useNoteContext } from '../contexts/noteContext'
 import { PianoAudioContext } from '../contexts/pianoAudioContext'
 import PianoKey from './PianoKey'
 
@@ -60,27 +60,26 @@ const notePatterns = [
 
 export default function PianoKeybed() {
   const { play, stop } = useContext(PianoAudioContext)
-  const pitchMapList = useSelector(state => state.notes.pitchMapList)
-  const dispatch = useDispatch()
-
+  const [noteState, noteDispatch] = useNoteContext()
+  
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.repeat) return
 
-      const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
+      const matchKey = noteState.pitchMapList.find(obj => obj.keyChar === e.key)
       if (!matchKey) return
 
       play(matchKey.frequency)
-      dispatch(noteActivateKey(matchKey.keyChar))
+      noteDispatch(noteActivateKey(matchKey.keyChar))
     }
 
     const handleKeyUp = (e) => {
       if (e.repeat) return
-      const matchKey = pitchMapList.find(obj => obj.keyChar === e.key)
+      const matchKey = noteState.pitchMapList.find(obj => obj.keyChar === e.key)
       if (!matchKey) return
 
       stop(matchKey.frequency)
-      dispatch(noteDeactivateKey(matchKey.keyChar))
+      noteDispatch(noteDeactivateKey(matchKey.keyChar))
     }
 
     document.addEventListener('keydown', handleKeyDown);
@@ -90,12 +89,12 @@ export default function PianoKeybed() {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
     }
-  }, [dispatch, pitchMapList, play, stop])
+  }, [noteDispatch, noteState, play, stop])
 
   const noteList = []
 
-  for (let i = 0; i < pitchMapList.length; i++) {
-    const obj = pitchMapList[i]
+  for (let i = 0; i < noteState.pitchMapList.length; i++) {
+    const obj = noteState.pitchMapList[i]
     noteList.push({
       name: obj.keyChar,
       className: notePatterns[i % 12].className,

@@ -1,4 +1,4 @@
-const initialState = {
+export const initialState = {
   transposeStep: 0,
   octaveShift: 0,
   pitchMapList: [
@@ -40,7 +40,7 @@ const getNewPitchMapList = (pitchMapList, octaveShift, transposeStep) => {
   }))
 }
 
-const noteReducer = (state = initialState, action) => {
+export const noteReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'note/setOctave':
       return {
@@ -78,5 +78,3 @@ const noteReducer = (state = initialState, action) => {
       return state
   }
 }
-
-export default noteReducer

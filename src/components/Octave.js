@@ -1,7 +1,7 @@
 import { Box, InputLabel, MenuItem, Select } from '@material-ui/core'
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { noteSetOctave } from '../actions/noteAction'
+import { useNoteContext } from '../contexts/noteContext'
 
 const octaveOptions = [
   '-2',
@@ -12,12 +12,12 @@ const octaveOptions = [
 ]
 
 export default function Octave() {
-  const dispatch = useDispatch()
-  const octaveShift = useSelector(state => state.notes.octaveShift)
+  const [noteState, noteDispatch] = useNoteContext()
+  const {octaveShift} = noteState
 
   const handleChange = (e) => {
     const shiftAmount = (e.target.value)
-    dispatch(noteSetOctave(shiftAmount))
+    noteDispatch(noteSetOctave(shiftAmount))
   }
   return (
     <Box m={3} className="toolbar-options">
