@@ -31,7 +31,7 @@
         var msie = ua.indexOf("MSIE ");
 
         if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./)) {
-          document.write("<h3 style=\"font-family: Arial;\">This site does not support Internet Explorer.<br> Please visit this site using other browsers. " +
+          document.write("<h3 style=\"font-family: Arial; background: #ffffff; padding: 20px;\">This site does not support Internet Explorer.<br> Please visit this site using other browsers. " +
             "<A HREF='microsoft-edge:" + window.location.href + "'>Click here to launch the app in MS Edge browser</A>" +
             "</h3>");
         }
